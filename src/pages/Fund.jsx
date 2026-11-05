@@ -11,10 +11,10 @@ const sorts = [
 ];
 
 export default function Fund() {
-  useTitle("Back a business — BulaBiz");
   const { list } = useFund();
   const [params, setParams] = useSearchParams();
   const view = params.get("view") === "offers" ? "offers" : "rounds";
+  useTitle(view === "rounds" ? "Scaling up — BulaBiz" : "Grants and loans — BulaBiz");
   const requested = params.get("filter") || "all";
   const filter = filters.some((item) => item.id === requested) ? requested : "all";
   const [sort, setSort] = useState("almost");
@@ -54,12 +54,15 @@ export default function Fund() {
     <div className="page">
       <header className="page-hero">
         <div className="wrap">
-          <p className="kicker">Funding Finder</p>
-          <h1>{view === "rounds" ? "Back a Fiji business you can actually read." : "Every grant and loan, in one place."}</h1>
+          <p className="kicker">{view === "rounds" ? "Tier 2 · scaling up" : "Tier 1 · grants and loans"}</p>
+          <h1>{view === "rounds" ? "Scaling up a business that already has a record." : "Every grant and loan, in one place."}</h1>
           <p className="lede">
             {view === "rounds"
-              ? "Open rounds are Tier 2: crowd backing, repaid from sales, no collateral. Each card is a concept profile with a use of funds and a live bar."
-              : "Tier 1 starts here. A shop should not have to guess which programme fits, or retell its story on five different forms."}
+              ? "Neighbours here and overseas back the next step. Repaid from sales, no collateral. Each card is a concept profile."
+              : "A shop that is just starting should not have to guess which programme fits, or retell its story on five forms."}
+          </p>
+          <p className="fine">
+            Still opening the doors? <Link to="/start">Start a business instead.</Link>
           </p>
           <div className="mode" role="tablist" aria-label="Funding Finder view">
             <button type="button" role="tab" aria-selected={view === "rounds"} className={view === "rounds" ? "on" : ""} onClick={() => setView("rounds")}>

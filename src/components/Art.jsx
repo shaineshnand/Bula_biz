@@ -148,12 +148,5 @@ export function Art({ id, label }) {
 }
 
 export function Mark({ size = 32 }) {
-  return (
-    <svg className="logo-mark" width={size} height={size} viewBox="0 0 32 32" aria-hidden="true">
-      <rect width="32" height="32" rx="8" fill="currentColor" />
-      <path fill="#f0c14d" d="M11.4 5.2c2.6 2.4 3.1 6.2 3.1 10.8s-.5 8.4-3.1 10.8c-2.6-2.4-3.2-6.2-3.2-10.8s.6-8.4 3.2-10.8Z" />
-      <path fill="#f7f3eb" d="M20.6 5.2c2.6 2.4 3.2 6.2 3.2 10.8s-.6 8.4-3.2 10.8c-2.6-2.4-3.1-6.2-3.1-10.8s.5-8.4 3.1-10.8Z" />
-      <path d="M12.6 13.2h6.8M12.6 18.8h6.8" stroke="#c4491d" strokeWidth="1.7" strokeLinecap="round" />
-    </svg>
-  );
+  return <img className="logo-mark" src="/logo.png" width={size} height={size} alt="" />;
 }

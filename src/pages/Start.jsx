@@ -1,7 +1,8 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { fjd } from "../data";
-import { useTitle } from "../context";
+import { useFund, useTitle } from "../context";
+import Card from "../components/Card";
 
 const seed = [
   { id: 1, desc: "Clutch repair", type: "sale", amount: 80 },
@@ -12,7 +13,9 @@ const seed = [
 ];
 
 export default function Start() {
-  useTitle("Start your books — BulaBiz");
+  useTitle("Starting a business — BulaBiz");
+  const { list } = useFund();
+  const starters = list.filter((b) => b.tier === "start");
   const [rows, setRows] = useState(seed);
   const [desc, setDesc] = useState("");
   const [amount, setAmount] = useState("");
@@ -58,14 +61,44 @@ export default function Start() {
     <div className="page">
       <header className="page-hero start-hero">
         <div className="wrap">
-          <p className="kicker">Tier 1 · for the person starting</p>
+          <p className="kicker">Tier 1 · starting a business</p>
           <h1>Starting a business, made simple.</h1>
           <p className="lede">
             You are Peni, opening a bay in Ba. The same three steps work for a bakery or a corner shop. Write the day.
             The statement writes itself. One form opens when the checklist is honest.
           </p>
+          <p className="fine">
+            Already past the first year? <Link to="/fund?filter=scale">Scale it up instead.</Link>
+          </p>
         </div>
       </header>
+
+      <section className="section tight">
+        <div className="wrap">
+          <ol className="plain-steps">
+            <li>
+              <span>1</span>
+              <h3>Write the day</h3>
+              <p>One line. A sale or a cost. No spreadsheet, no dossier.</p>
+            </li>
+            <li>
+              <span>2</span>
+              <h3>See where you stand</h3>
+              <p>The statement and the checklist fill themselves in from those lines.</p>
+            </li>
+            <li>
+              <span>3</span>
+              <h3>Send one form</h3>
+              <p>The grant that fits. A person decides. Next time you only update what changed.</p>
+            </li>
+          </ol>
+          <div className="grid">
+            {starters.map((b) => (
+              <Card key={b.id} business={b} />
+            ))}
+          </div>
+        </div>
+      </section>
 
       <section className="section">
         <div className="wrap start-grid">

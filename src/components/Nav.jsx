@@ -36,8 +36,8 @@ export default function Nav() {
         </Link>
 
         <nav className="nav-links" aria-label="Primary">
-          <NavLink to="/start">For businesses</NavLink>
-          <NavLink to="/fund">Back one</NavLink>
+          <NavLink to="/start">Starting</NavLink>
+          <NavLink to="/fund?filter=scale">Scaling up</NavLink>
           <NavLink to="/journey">Journey</NavLink>
         </nav>
 
@@ -46,9 +46,6 @@ export default function Nav() {
             Your backs
             <span>{pledges.length}</span>
           </button>
-          <Link className="btn btn-small btn-coral" to="/fund">
-            Back a business
-          </Link>
           <button
             className="nav-toggle"
             type="button"
@@ -66,10 +63,10 @@ export default function Nav() {
       {menu && (
         <div className="nav-panel" id="mobile-nav">
           <NavLink to="/start" onClick={() => setMenu(false)}>
-            Start your business
+            Starting a business
           </NavLink>
-          <NavLink to="/fund" onClick={() => setMenu(false)}>
-            Back a business
+          <NavLink to="/fund?filter=scale" onClick={() => setMenu(false)}>
+            Scaling up
           </NavLink>
           <NavLink to="/fund?view=offers" onClick={() => setMenu(false)}>
             Funding Finder
