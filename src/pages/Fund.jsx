@@ -119,7 +119,7 @@ export default function Fund() {
             ) : (
               <>
                 {[
-                  ["start", "Tier 1 · for businesses starting up", "A simple book, then one grant form"],
+                  ["start", "Tier 1 · from registration to operating", "Register, get ready to open, then trade"],
                   ["scale", "Tier 2 · Scale It Up", "Crowd rounds, repaid from sales"],
                 ].map(([tier, title, note]) => {
                   const items = shown.filter((b) => b.tier === tier);

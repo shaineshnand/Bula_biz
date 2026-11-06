@@ -219,8 +219,8 @@ export const businesses = [
     opened: "2026-10-11",
     years: 0,
     people: "Peni",
-    pace: 2,
-    paceNote: "Every job is in the book. The checklist is the next step.",
+    pace: 3,
+    paceNote: "Registered and open. Every job is in the book. The checklist is the next step.",
     blurb:
       "Peni opened a bay in Ba. He writes each job as it happens. One youth-grant form is the whole ask.",
     story: [
@@ -247,8 +247,8 @@ export const businesses = [
     opened: "2026-10-20",
     years: 1,
     people: "Alisi",
-    pace: 1,
-    paceNote: "The morning loaves are going in the book.",
+    pace: 3,
+    paceNote: "Registered and operating. The morning loaves are going in the book.",
     blurb:
       "Alisi sells bread from her window in Rakiraki. The book is the business. The grant form comes when the lines are honest.",
     story: [
@@ -275,8 +275,8 @@ export const businesses = [
     opened: "2026-10-28",
     years: 0,
     people: "Viliame",
-    pace: 1,
-    paceNote: "Each packet sold is one line. The form waits.",
+    pace: 3,
+    paceNote: "Registered and operating. Each packet sold is one line. The form waits.",
     blurb:
       "Viliame opened a spice shelf on the road into Navua. He is starting with the book, not a pile of forms.",
     story: [

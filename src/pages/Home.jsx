@@ -1,28 +1,17 @@
 import { Link } from "react-router-dom";
 import { useTitle } from "../context";
-import { Mark } from "../components/Art";
 
 export default function Home() {
-  useTitle("BulaBiz — Starting, or scaling up");
+  useTitle("Choose a door — BulaBiz");
 
   return (
     <section className="landing">
       <div className="wrap">
-        <figure className="landing-scene">
-          <img src="/photos/josefa.jpg" alt="A palm-lined Fiji coast, the kind of shore a new shop starts on" />
-          <figcaption>
-            <Mark size={56} />
-            <span>
-              bula<em>biz</em>
-              <small>The platform that connects entrepreneurs who need capital with people who have it.</small>
-            </span>
-          </figcaption>
-        </figure>
         <h1>
           Where is the <em>business?</em>
         </h1>
         <p className="lede">
-          Choose the door that matches today. Starting means the books and one grant form. Scaling up means the record is already there, and neighbours can back the next step.
+          Choose the door that matches today. Tier 1 takes a business from registration until it is operating. Tier 2 is for a business already open, when people with capital can back the next step.
         </p>
 
         <div className="doors">
@@ -31,11 +20,11 @@ export default function Home() {
             <div>
               <p className="kicker">Tier 1</p>
               <h2>Starting a business</h2>
-              <p>A bay, a stall, or a kitchen. Write what happened today. The statement and one grant form follow from those lines. Free for the shop.</p>
+              <p>From the day the business is registered, until the doors are open and the first sales are in. One profile carries the whole start. Free for the business.</p>
               <ul>
-                <li>One book for sales and costs</li>
-                <li>A checklist that fills itself in</li>
-                <li>One form. A person decides.</li>
+                <li>Register the business</li>
+                <li>Get it ready to open</li>
+                <li>Operate, and keep each day in the book</li>
               </ul>
               <span className="btn">I’m starting</span>
             </div>
@@ -58,7 +47,7 @@ export default function Home() {
         </div>
 
         <p className="landing-note">
-          One profile carries a business from the first receipt to the first backer.{" "}
+          One profile carries a business from registration, through operating, to the first backer.{" "}
           <Link to="/journey">See how the two doors connect.</Link>
         </p>
       </div>

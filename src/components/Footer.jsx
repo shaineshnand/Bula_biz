@@ -13,12 +13,12 @@ export default function Footer() {
             </span>
           </Link>
           <p>
-            One profile for a Fiji business, from the first recorded sale to a crowd that can see the track record.
+            One profile for a Fiji business, from registration until it is operating, and on to people who can back it.
           </p>
         </div>
         <div>
           <h2>For shops</h2>
-          <Link to="/start">Start your books</Link>
+          <Link to="/start">Start a business</Link>
           <Link to="/fund?view=offers">Funding Finder</Link>
           <Link to="/journey">How graduation works</Link>
         </div>
@@ -33,6 +33,7 @@ export default function Footer() {
           <Link to="/journey">Two tiers</Link>
           <Link to="/journey#trust">People decide</Link>
           <Link to="/journey#phase">Pilot, then scale</Link>
+          <Link to="/present">Presentation</Link>
         </div>
       </div>
       <div className="wrap footer-note">

@@ -5,7 +5,7 @@ import { useFund } from "../context";
 import { Mark } from "./Art";
 
 export default function Nav() {
-  const { pledges, total, removePledge, list } = useFund();
+  const { pledges, total, removePledge, list, account } = useFund();
   const [menu, setMenu] = useState(false);
   const dialogRef = useRef(null);
 
@@ -36,12 +36,23 @@ export default function Nav() {
         </Link>
 
         <nav className="nav-links" aria-label="Primary">
+          <NavLink to="/" end>
+            Platform
+          </NavLink>
+          <NavLink to="/home">Doors</NavLink>
           <NavLink to="/start">Starting</NavLink>
           <NavLink to="/fund?filter=scale">Scaling up</NavLink>
           <NavLink to="/journey">Journey</NavLink>
         </nav>
 
         <div className="nav-end">
+          {account ? (
+            <span className="backs-btn">In · {account.name.split(" ")[0]}</span>
+          ) : (
+            <Link className="btn btn-small" to="/#register">
+              Register
+            </Link>
+          )}
           <button className="backs-btn" type="button" onClick={openBacks}>
             Your backs
             <span>{pledges.length}</span>
@@ -62,6 +73,12 @@ export default function Nav() {
 
       {menu && (
         <div className="nav-panel" id="mobile-nav">
+          <NavLink to="/" end onClick={() => setMenu(false)}>
+            The platform
+          </NavLink>
+          <NavLink to="/home" onClick={() => setMenu(false)}>
+            Both doors
+          </NavLink>
           <NavLink to="/start" onClick={() => setMenu(false)}>
             Starting a business
           </NavLink>
@@ -73,6 +90,9 @@ export default function Nav() {
           </NavLink>
           <NavLink to="/journey" onClick={() => setMenu(false)}>
             The journey
+          </NavLink>
+          <NavLink to="/#register" onClick={() => setMenu(false)}>
+            {account ? "Your registration" : "Register"}
           </NavLink>
         </div>
       )}

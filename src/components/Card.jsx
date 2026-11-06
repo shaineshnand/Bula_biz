@@ -49,7 +49,7 @@ export default function Card({ business }) {
         ) : (
           <>
             <ol className="simple-rail" aria-label={`${b.name} is on step ${b.pace || 1} of 3`}>
-              {["Write the day", "See the books", "One form"].map((label, i) => (
+              {["Register", "Ready to open", "Operate"].map((label, i) => (
                 <li key={label} className={(b.pace || 1) > i ? "on" : ""}>
                   {label}
                 </li>
@@ -62,7 +62,7 @@ export default function Card({ business }) {
           className={`btn btn-block ${open ? "btn-coral" : b.tier === "start" ? "" : "btn-ghost"}`}
           to={b.tier === "start" ? "/start" : `/business/${b.id}`}
         >
-          {open ? `Back ${b.name}` : b.tier === "start" ? "Try the simple books" : `View ${b.name}`}
+          {open ? `Back ${b.name}` : b.tier === "start" ? "Do the steps" : `View ${b.name}`}
         </Link>
       </div>
     </article>

@@ -1,12 +1,14 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { backers, fjd } from "../data";
 import { useFund, useTitle } from "../context";
 import Card from "../components/Card";
+import Growth, { growthOf } from "../components/Growth";
+import Returns from "../components/Returns";
 
 export default function Profile() {
   const { id } = useParams();
-  const { list, pledge } = useFund();
+  const { list, pledge, pledges } = useFund();
   const business = list.find((b) => b.id === id);
   useTitle(business ? `${business.name} · ${business.business} — BulaBiz` : "Profile — BulaBiz");
 
@@ -20,6 +22,12 @@ export default function Profile() {
     if (business.tier === "start") return list.filter((b) => b.id !== business.id && b.tier === "start");
     return list.filter((b) => b.id !== business.id && b.goal).slice(0, 3);
   }, [list, business]);
+  const invested = pledges.filter((p) => p.id === id).reduce((sum, p) => sum + p.amount, 0);
+
+  useEffect(() => {
+    if (!invested) return;
+    document.getElementById("investor-returns")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [invested]);
 
   if (!business) {
     return (
@@ -33,6 +41,7 @@ export default function Profile() {
   }
 
   const b = business;
+  const growth = b.tier === "scale" ? growthOf(b.sales) : null;
   const choices = [25, 50, 100, 250].filter((n) => b.left != null && n < b.left);
   const selected = b.left != null ? Math.min(amount, b.left) : 0;
 
@@ -79,6 +88,17 @@ export default function Profile() {
             </p>
           ))}
 
+          {b.tier === "scale" && (
+            <>
+              <h2>The growth an investor is backing</h2>
+              <p className="who">
+                Last week’s takings were {fjd(b.sales.at(-1))}. {growth >= 0 ? "Up" : "Down"} {Math.abs(growth)}% from six weeks ago. The round is repaid from this line.
+              </p>
+              <Growth sales={b.sales} />
+              {invested > 0 && <Returns business={b} amount={invested} />}
+            </>
+          )}
+
           <h2>{b.tier === "start" ? "What a first grant would cover" : "What the money is for"}</h2>
           <ul className="use">
             {b.use.map((item) => (
@@ -86,20 +106,24 @@ export default function Profile() {
             ))}
           </ul>
 
-          <h2>Last six weeks of takings</h2>
-          <p className="who">Pulled from the same profile that would attach to a grant. Figures are part of the concept.</p>
-          <div className="chart" aria-hidden="true">
-            {b.sales.map((n, i) => (
-              <div key={i} style={{ height: `${(n / maxSale) * 100}%` }}>
-                <span>{n}</span>
+          {b.tier === "start" && (
+            <>
+              <h2>Last six weeks of takings</h2>
+              <p className="who">Pulled from the same profile that would attach to a grant. Figures are part of the concept.</p>
+              <div className="chart" aria-hidden="true">
+                {b.sales.map((n, i) => (
+                  <div key={i} style={{ height: `${(n / maxSale) * 100}%` }}>
+                    <span>{n}</span>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-          <div className="chart-labels" aria-hidden="true">
-            {["W1", "W2", "W3", "W4", "W5", "W6"].map((w) => (
-              <span key={w}>{w}</span>
-            ))}
-          </div>
+              <div className="chart-labels" aria-hidden="true">
+                {["W1", "W2", "W3", "W4", "W5", "W6"].map((w) => (
+                  <span key={w}>{w}</span>
+                ))}
+              </div>
+            </>
+          )}
 
           {b.tier === "start" ? (
             <>
@@ -115,8 +139,8 @@ export default function Profile() {
               <h2>How repayment would work</h2>
               <p className="story">{b.repay}.</p>
               <p className="story">
-                A thin week pays less and the term can run longer. Backers can lose money. This page does not offer a
-                financial return, and this preview does not take a payment.
+                A thin week pays less and the term can run longer. The same books can leave an investor ahead or short.
+                This preview does not take a payment.
               </p>
             </>
           )}
@@ -144,7 +168,7 @@ export default function Profile() {
 
         <aside className={`pledge ${open ? "open" : ""}`}>
           <button type="button" className="pledge-tab" onClick={() => setOpen((v) => !v)}>
-            {b.goal ? (b.funded ? "Round filled" : `Preview a back · ${fjd(b.left)} to go`) : "The simple path"}
+            {b.goal ? (b.funded ? "Round filled" : `Invest · ${fjd(b.left)} to go`) : "The simple path"}
           </button>
           <div className="pledge-card">
             <button type="button" className="pledge-close" onClick={() => setOpen(false)}>
@@ -153,7 +177,7 @@ export default function Profile() {
             {b.goal ? (
               <>
                 <p className="kicker">{b.funded ? "Filled in this preview" : "Open round"}</p>
-                <p className="pledge-left">{b.funded ? "Fully backed" : fjd(b.left)}</p>
+                <p className="pledge-left">{b.funded ? "Fully invested" : fjd(b.left)}</p>
                 <p className="who">{b.funded ? "The bar is full." : `to go of ${fjd(b.goal)}`}</p>
                 <div
                   className={b.pct >= 85 ? "meter hot" : "meter"}
@@ -161,18 +185,24 @@ export default function Profile() {
                   aria-valuenow={b.pct}
                   aria-valuemin={0}
                   aria-valuemax={100}
-                  aria-label={`${b.pct}% backed`}
+                  aria-label={`${b.pct}% invested`}
                 >
                   <span style={{ width: `${b.pct}%` }} />
                 </div>
                 <p className="meter-row">
-                  <span>{fjd(b.raisedNow)} backed</span>
+                  <span>{fjd(b.raisedNow)} invested</span>
                   <span>{b.pct}%</span>
                 </p>
+                {growth != null && (
+                  <p className="growth-side">
+                    <strong>{growth >= 0 ? "Up" : "Down"} {Math.abs(growth)}%</strong>
+                    <span>sales over six weeks. That is the line repayment comes from.</span>
+                  </p>
+                )}
                 {!b.funded && (
                   <form onSubmit={back}>
                     <fieldset>
-                      <legend>Choose an amount</legend>
+                      <legend>Choose an amount to invest</legend>
                       <div className="amounts">
                         {choices.map((n) => (
                           <button
@@ -194,11 +224,11 @@ export default function Profile() {
                       </div>
                     </fieldset>
                     <button className="btn btn-coral btn-block" type="submit">
-                      Preview {fjd(selected)} for {b.name}
+                      Invest {fjd(selected)} in {b.name}
                     </button>
                   </form>
                 )}
-                {done && <p className="thanks tight">Added to your backs. Nothing was charged.</p>}
+                {done && <p className="thanks tight">Your figures are on the profile. Nothing was charged.</p>}
                 <dl className="pledge-meta">
                   <div>
                     <dt>Term</dt>
@@ -222,14 +252,14 @@ export default function Profile() {
                   {b.name} is on step {b.pace || 1} of 3. {b.paceNote} The same path fits a bay, a bakery, or a corner shop.
                 </p>
                 <Link className="btn btn-block" to="/start">
-                  Try the simple books
+                  Do the steps
                 </Link>
               </>
             )}
             <p className="fine">
               {b.tier === "start"
                 ? "Free for the business. This preview does not send a real application."
-                : "Concept only. Backing a real round can mean late or lost money."}
+                : "Concept only. Investing in a real round can mean late or lost money."}
             </p>
           </div>
         </aside>

@@ -2,10 +2,24 @@ import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { businesses as seed, decorate } from "./data";
 
 const FundContext = createContext(null);
+const ACCOUNT_KEY = "bulabiz-account";
+
+function readAccount() {
+  try {
+    const raw = localStorage.getItem(ACCOUNT_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (!parsed?.name || !parsed?.email || !parsed?.role) return null;
+    return parsed;
+  } catch {
+    return null;
+  }
+}
 
 export function FundProvider({ children }) {
   const [pledges, setPledges] = useState([]);
   const [toast, setToast] = useState(null);
+  const [account, setAccount] = useState(readAccount);
 
   useEffect(() => {
     if (!toast) return undefined;
@@ -38,8 +52,19 @@ export function FundProvider({ children }) {
       setPledges((current) => current.filter((p) => p.at !== at));
     }
 
-    return { list, pledges, total, pledge, removePledge, toast, setToast };
-  }, [pledges, toast]);
+    function register(person) {
+      const next = {
+        name: person.name.trim(),
+        email: person.email.trim(),
+        role: person.role,
+      };
+      localStorage.setItem(ACCOUNT_KEY, JSON.stringify(next));
+      setAccount(next);
+      return next;
+    }
+
+    return { list, pledges, total, pledge, removePledge, toast, setToast, account, register };
+  }, [pledges, toast, account]);
 
   return <FundContext.Provider value={api}>{children}</FundContext.Provider>;
 }
